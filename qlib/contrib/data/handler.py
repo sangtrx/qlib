@@ -430,3 +430,149 @@ class Alpha158(DataHandlerLP):
 class Alpha158vwap(Alpha158):
     def get_label_config(self):
         return ["Ref($vwap, -2)/Ref($vwap, -1) - 1"], ["LABEL0"]
+
+class Sang1(DataHandlerLP):
+    def __init__(
+        self,
+        instruments="top100",
+        start_time=None,
+        end_time=None,
+        freq="day",
+        infer_processors=[],
+        learn_processors=_DEFAULT_LEARN_PROCESSORS,
+        fit_start_time=None,
+        fit_end_time=None,
+        process_type=DataHandlerLP.PTYPE_A,
+        filter_pipe=None,
+        inst_processors=None,
+        num_alpha=1,
+        **kwargs
+    ):
+        infer_processors = check_transform_proc(infer_processors, fit_start_time, fit_end_time)
+        learn_processors = check_transform_proc(learn_processors, fit_start_time, fit_end_time)
+
+        # Set num_alpha as an attribute of the instance
+        self.num_alpha = num_alpha
+        
+        data_loader = {
+            "class": "QlibDataLoader",
+            "kwargs": {
+                "config": {
+                    "feature": self.get_feature_config(),
+                    "label": kwargs.pop("label", self.get_label_config()),
+                },
+                "filter_pipe": filter_pipe,
+                "freq": freq,
+                "inst_processors": inst_processors,
+            },
+        }
+        super().__init__(
+            instruments=instruments,
+            start_time=start_time,
+            end_time=end_time,
+            data_loader=data_loader,
+            infer_processors=infer_processors,
+            learn_processors=learn_processors,
+            process_type=process_type,
+            **kwargs
+        )
+
+    def get_feature_config(self):
+        conf = {
+            "kbar": {},
+            "price": {
+                "windows": [0],
+                "feature": ["OPEN", "HIGH", "LOW", "VWAP"],
+            },
+            "rolling": {},
+            "fisher": {},
+        }
+        return self.parse_config_to_fields(conf, self.num_alpha)
+
+    def get_label_config(self):
+        return ["Ref($close, -3)/$close - 1"], ["LABEL0"]
+
+    @staticmethod
+    def parse_config_to_fields(config, num_alpha):
+        fields = []
+        names = []
+
+        
+        for i in range(1, num_alpha + 1):
+            fields.append("$alpha{}".format(i))
+            names.append("alpha{}".format(i))
+
+        return fields, names
+
+class Sang2(DataHandlerLP):
+    def __init__(
+        self,
+        instruments="top100",
+        start_time=None,
+        end_time=None,
+        freq="day",
+        infer_processors=[],
+        learn_processors=_DEFAULT_LEARN_PROCESSORS,
+        fit_start_time=None,
+        fit_end_time=None,
+        process_type=DataHandlerLP.PTYPE_A,
+        filter_pipe=None,
+        inst_processors=None,
+        num_alpha=1,
+        **kwargs
+    ):
+        infer_processors = check_transform_proc(infer_processors, fit_start_time, fit_end_time)
+        learn_processors = check_transform_proc(learn_processors, fit_start_time, fit_end_time)
+
+        # Set num_alpha as an attribute of the instance
+        self.num_alpha = num_alpha
+        
+        data_loader = {
+            "class": "QlibDataLoader",
+            "kwargs": {
+                "config": {
+                    "feature": self.get_feature_config(),
+                    "label": kwargs.pop("label", self.get_label_config()),
+                },
+                "filter_pipe": filter_pipe,
+                "freq": freq,
+                "inst_processors": inst_processors,
+            },
+        }
+        super().__init__(
+            instruments=instruments,
+            start_time=start_time,
+            end_time=end_time,
+            data_loader=data_loader,
+            infer_processors=infer_processors,
+            learn_processors=learn_processors,
+            process_type=process_type,
+            **kwargs
+        )
+
+    def get_feature_config(self):
+        conf = {
+            "kbar": {},
+            "price": {
+                "windows": [0],
+                "feature": ["OPEN", "HIGH", "LOW", "VWAP"],
+            },
+            "rolling": {},
+            "fisher": {},
+        }
+        return self.parse_config_to_fields(conf, self.num_alpha)
+
+    def get_label_config(self):
+        return ["$label"], ["LABEL0"]
+
+    @staticmethod
+    def parse_config_to_fields(config, num_alpha):
+        fields = []
+        names = []
+
+        
+        for i in range(1, num_alpha + 1):
+            fields.append("$alpha{}".format(i))
+            names.append("alpha{}".format(i))
+
+        return fields, names
