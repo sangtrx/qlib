@@ -14,20 +14,20 @@ from .base import Expression, ExpressionOps, Feature, PFeature
 from ..log import get_module_logger
 from ..utils import get_callable_kwargs
 
-try:
-    from ._libs.rolling import rolling_slope, rolling_rsquare, rolling_resi
-    from ._libs.expanding import expanding_slope, expanding_rsquare, expanding_resi
-except ImportError:
-    print(
-        "#### Do not import qlib package in the repository directory in case of importing qlib from . without compiling #####"
-    )
-    raise
-except ValueError:
-    print("!!!!!!!! A error occurs when importing operators implemented based on Cython.!!!!!!!!")
-    print("!!!!!!!! They will be disabled. Please Upgrade your numpy to enable them     !!!!!!!!")
-    # We catch this error because some platform can't upgrade there package (e.g. Kaggle)
-    # https://www.kaggle.com/general/293387
-    # https://www.kaggle.com/product-feedback/98562
+# try:
+#     from ._libs.rolling import rolling_slope, rolling_rsquare, rolling_resi
+#     from ._libs.expanding import expanding_slope, expanding_rsquare, expanding_resi
+# except ImportError:
+#     print(
+#         "#### Do not import qlib package in the repository directory in case of importing qlib from . without compiling #####"
+#     )
+#     raise
+# except ValueError:
+#     print("!!!!!!!! A error occurs when importing operators implemented based on Cython.!!!!!!!!")
+#     print("!!!!!!!! They will be disabled. Please Upgrade your numpy to enable them     !!!!!!!!")
+#     # We catch this error because some platform can't upgrade there package (e.g. Kaggle)
+#     # https://www.kaggle.com/general/293387
+#     # https://www.kaggle.com/product-feedback/98562
 
 
 np.seterr(invalid="ignore")
