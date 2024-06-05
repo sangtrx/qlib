@@ -14,7 +14,7 @@ from typing import Tuple
 
 from ..backtest.decision import BaseTradeDecision
 from ..backtest.utils import CommonInfrastructure, LevelInfrastructure, TradeCalendarManager
-from ..rl.interpreter import ActionInterpreter, StateInterpreter
+# from ..rl.interpreter import ActionInterpreter, StateInterpreter
 from ..utils import init_instance_by_config
 
 __all__ = ["BaseStrategy", "RLStrategy", "RLIntStrategy"]
