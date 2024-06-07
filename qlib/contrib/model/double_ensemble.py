@@ -258,6 +258,20 @@ class DEnsembleModel(Model, FeatureInt):
         pred = pred / np.sum(self.sub_weights)
         return pred
 
+    def predict_direct(self, x_test):
+        if self.ensemble is None:
+            raise ValueError("model is not fitted yet!")
+        pred = pd.Series(np.zeros(x_test.shape[0]), index=x_test.index)
+        for i_sub, submodel in enumerate(self.ensemble):
+            feat_sub = self.sub_features[i_sub]
+            pred += (
+                pd.Series(submodel.predict(x_test.loc[:, feat_sub].values), index=x_test.index)
+                * self.sub_weights[i_sub]
+            )
+        pred = pred / np.sum(self.sub_weights)
+        return pred
+
+    
     def predict_sub(self, submodel, df_data, features):
         x_data = df_data["feature"].loc[:, features]
         pred_sub = pd.Series(submodel.predict(x_data.values), index=x_data.index)
