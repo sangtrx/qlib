@@ -95,6 +95,11 @@ class LGBModel(ModelFT, LightGBMFInt):
         x_test = dataset.prepare(segment, col_set="feature", data_key=DataHandlerLP.DK_I)
         return pd.Series(self.model.predict(x_test.values), index=x_test.index)
 
+    def predict_direct(self, x_test):
+        if self.model is None:
+            raise ValueError("model is not fitted yet!")
+        return pd.Series(self.model.predict(x_test.values), index=x_test.index)
+    
     def finetune(self, dataset: DatasetH, num_boost_round=10, verbose_eval=20, reweighter=None):
         """
         finetune model
