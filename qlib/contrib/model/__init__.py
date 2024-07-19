@@ -41,5 +41,5 @@ except ModuleNotFoundError:
 #     print("ModuleNotFoundError.  PyTorch models are skipped (optional: maybe installing pytorch can fix it).")
 
 # all_model_classes = (CatBoostModel, DEnsembleModel, LGBModel, XGBModel, LinearModel) + pytorch_classes
-all_model_classes = (DEnsembleModel)
+all_model_classes = (DEnsembleModel, LGBModel)
 
