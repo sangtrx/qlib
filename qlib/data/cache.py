@@ -11,7 +11,7 @@ import stat
 import time
 import pickle
 import traceback
-import redis_lock
+# import redis_lock
 import contextlib
 import abc
 from pathlib import Path
