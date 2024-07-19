@@ -11,7 +11,7 @@ import re
 import copy
 import json
 import yaml
-import redis
+# import redis
 import bisect
 import struct
 import difflib
